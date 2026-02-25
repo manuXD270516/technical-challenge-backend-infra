@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: vibepeak
+      POSTGRES_USER: vibepeak
+      POSTGRES_PASSWORD: vibepeak_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vibepeak"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: vibepeak
+      DB_USER: vibepeak
+      DB_PASSWORD: vibepeak_secret
+      PROCESSING_SERVICE_URL: http://api:3000/mock/process
+      CALLBACK_BASE_URL: http://api:3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
