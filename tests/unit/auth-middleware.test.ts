@@ -36,7 +36,7 @@ describe('Auth Middleware', () => {
     authMiddleware(mockReq as Request, mockRes as Response, mockNext);
 
     expect(mockNext).toHaveBeenCalledWith(expect.any(AppError));
-    const error = mockNext.mock.calls[0][0] as AppError;
+    const error = mockNext.mock.calls[0][0] as unknown as AppError;
     expect(error.statusCode).toBe(401);
     expect(error.code).toBe('UNAUTHORIZED');
   });
@@ -47,7 +47,7 @@ describe('Auth Middleware', () => {
     authMiddleware(mockReq as Request, mockRes as Response, mockNext);
 
     expect(mockNext).toHaveBeenCalledWith(expect.any(AppError));
-    const error = mockNext.mock.calls[0][0] as AppError;
+    const error = mockNext.mock.calls[0][0] as unknown as AppError;
     expect(error.statusCode).toBe(401);
   });
 
@@ -57,7 +57,7 @@ describe('Auth Middleware', () => {
     authMiddleware(mockReq as Request, mockRes as Response, mockNext);
 
     expect(mockNext).toHaveBeenCalledWith(expect.any(AppError));
-    const error = mockNext.mock.calls[0][0] as AppError;
+    const error = mockNext.mock.calls[0][0] as unknown as AppError;
     expect(error.statusCode).toBe(401);
   });
 
@@ -70,7 +70,7 @@ describe('Auth Middleware', () => {
     await new Promise(process.nextTick);
 
     expect(mockNext).toHaveBeenCalledWith(expect.any(AppError));
-    const error = mockNext.mock.calls[0][0] as AppError;
+    const error = mockNext.mock.calls[0][0] as unknown as AppError;
     expect(error.statusCode).toBe(401);
     expect(error.code).toBe('UNAUTHORIZED');
   });
